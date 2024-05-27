@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ToDoListProject.DAL;
+
 namespace ToDoListProject
 {
     public class Program
@@ -5,16 +8,17 @@ namespace ToDoListProject
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            var connectionString = builder.Configuration.GetConnectionString("MSSQL");
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Task/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -28,7 +32,7 @@ namespace ToDoListProject
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Task}/{action=Index}/{id?}");
 
             app.Run();
         }
