@@ -1,8 +1,19 @@
-﻿@{
+﻿@using ToDoListProject.Domain.Enum
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h4 class="mb-3 text-muted">Create Task</h4>
+<form id="createTaskForm">
+    <div class="mb-3">
+        <label class="form-label">Name of the task</label>
+        <input name="name" type="text" class="form-control" />
+    </div>
+    <label class="form-label">Type of the task</label>
+    <select name="priority" class=" form-select mb-3" asp-items="@Html.GetEnumSelectList<Priority>()"></select>
+    <div class="mb-3">
+        <label class="form-label">Description of the task</label>
+        <textarea name="description" type="text" class="form-control" rows="3"></textarea>
+    </div>
+    <button id="createTask" class="btn btn-primary">Create</button>
+</form>
