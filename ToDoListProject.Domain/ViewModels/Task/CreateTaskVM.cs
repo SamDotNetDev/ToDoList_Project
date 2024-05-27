@@ -1,25 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ToDoListProject.Domain.Enum;
 
-namespace ToDoListProject.Domain.Entity
+namespace ToDoListProject.Domain.ViewModels.Task
 {
-    public class TaskEntity
+    public class CreateTaskVM
     {
-        [Key]
-        [Required]
-        public long Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public bool IsDone { get; set; }
-
-        [Required]
         public string Description { get; set; }
-
-        [Required]
-        public DateTime Created {  get; set; }
 
         [Required]
         public Priority Priority { get; set; }

@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ToDoListProject.DAL;
+using ToDoListProject.DAL.Interfaces;
+using ToDoListProject.DAL.Repositories;
+using ToDoListProject.Domain.Entity;
+using ToDoListProject.Service.Implementations;
+using ToDoListProject.Service.Interfaces;
 
 namespace ToDoListProject
 {
@@ -12,6 +17,9 @@ namespace ToDoListProject
             // Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddScoped<IBaseRepository<TaskEntity>, TaskRepository>();
+            builder.Services.AddScoped<ITaskService, TaskService>();
 
             var app = builder.Build();
 
