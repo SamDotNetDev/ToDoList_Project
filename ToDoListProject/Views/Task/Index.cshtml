@@ -18,10 +18,35 @@
     <button id="createTask" class="btn btn-primary">Create</button>
 </form>
 
+<table class="table table-dark table-hover" id="taskTableId">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Desctiption</th>
+            <th>Is ready</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
 @section Scripts
 {
+    <script type="text/javascript" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+        let dataTable = $('#taskTableId').DataTable({
+            info: true,
+            serverSide: false,
+            searching: false,
+            paging: false,
+            sorting: false
+        });
+
         $('#createTask').on('click', function (e) {
             e.preventDefault();
             $.ajax({
