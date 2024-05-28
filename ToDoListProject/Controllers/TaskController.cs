@@ -31,6 +31,12 @@ namespace ToDoListProject.Controllers
             return BadRequest(new {description = response.Description});
         }
 
+        public async Task<IActionResult> TaskHandler()
+        {
+            var response = await _service.GetTasks();
+            return Json(new { data = response.Data});
+        }
+
         public IActionResult Privacy()
         {
             return View();
