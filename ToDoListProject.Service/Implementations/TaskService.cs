@@ -68,5 +68,36 @@ namespace ToDoListProject.Service.Implementations
                 };
             }
         }
+
+        public async Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks()
+        {
+            try
+            {
+                var task = await _repository.GetAll()
+                    .Select(x => new TaskVM()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        IsDone = x.IsDone == true ? "Ready" : "Not ready",
+                        Priority = x.Priority,
+                        Created = x.Created.ToLongDateString()
+                    }).ToListAsync();
+
+                return new BaseResponse<IEnumerable<TaskVM>>()
+                {
+                    Data = task
+                };
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"[TaskService.Create]: {ex.Message}");
+                return new BaseResponse<IEnumerable<TaskVM>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
     }
 }
