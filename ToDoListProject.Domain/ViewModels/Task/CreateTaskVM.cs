@@ -13,5 +13,18 @@ namespace ToDoListProject.Domain.ViewModels.Task
 
         [Required]
         public Priority Priority { get; set; }
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                throw new ArgumentNullException(Name, "Write name of the task");
+            }
+
+            if (string.IsNullOrWhiteSpace(Description))
+            {
+                throw new ArgumentNullException(Description, "Write description of the task");
+            }
+        }
     }
 }
