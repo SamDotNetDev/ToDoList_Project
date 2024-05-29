@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListProject", "ToDoListProject\ToDoListProject.csproj", "{CBA442EE-5114-41D4-BEF6-9E369F6F18A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListProject", "ToDoListProject\ToDoListProject.csproj", "{CBA442EE-5114-41D4-BEF6-9E369F6F18A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C0585B75-A559-4E6C-B262-7D03FB40982B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListProject.Domain", "ToDoListProject.Domain\ToDoListProject.Domain.csproj", "{BE3FD097-6574-4F33-BF51-E42B1C9C0493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListProject.Domain", "ToDoListProject.Domain\ToDoListProject.Domain.csproj", "{BE3FD097-6574-4F33-BF51-E42B1C9C0493}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{FBBF66C1-B66C-4397-8D46-BC1D5400ECEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListProject.DAL", "ToDoListProject.DAL\ToDoListProject.DAL.csproj", "{04E49899-0496-40B9-8A93-B0241398186A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListProject.DAL", "ToDoListProject.DAL\ToDoListProject.DAL.csproj", "{04E49899-0496-40B9-8A93-B0241398186A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{40E80335-EF1E-43FF-816D-CA437AAF347D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListProject.Service", "ToDoListProject.Service\ToDoListProject.Service.csproj", "{2C6A2EEB-BCAC-44F9-8943-DF50CF19C901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoListProject.Service", "ToDoListProject.Service\ToDoListProject.Service.csproj", "{2C6A2EEB-BCAC-44F9-8943-DF50CF19C901}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
