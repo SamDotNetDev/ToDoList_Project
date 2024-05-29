@@ -110,6 +110,7 @@ namespace ToDoListProject.Service.Implementations
             try
             {
                 var task = await _repository.GetAll()
+                    .Where(x => !x.IsDone)
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Name), x => x.Name == filter.Name)
                     .WhereIf(filter.Priority.HasValue, x => x.Priority == filter.Priority)
                     .Select(x => new TaskVM()
