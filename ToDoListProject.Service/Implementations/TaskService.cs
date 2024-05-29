@@ -6,6 +6,8 @@ using ToDoListProject.Domain.Response;
 using ToDoListProject.Domain.ViewModels.Task;
 using ToDoListProject.Service.Interfaces;
 using ToDoListProject.Domain.Enum;
+using ToDoListProject.Domain.Filters.Task;
+using ToDoListProject.Domain.Extensions;
 
 namespace ToDoListProject.Service.Implementations
 {
@@ -69,11 +71,13 @@ namespace ToDoListProject.Service.Implementations
             }
         }
 
-        public async Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks()
+        public async Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks(TaskFilter filter)
         {
             try
             {
                 var task = await _repository.GetAll()
+                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Name), x => x.Name == filter.Name)
+                    .WhereIf(filter.Priority.HasValue, x => x.Priority == filter.Priority)
                     .Select(x => new TaskVM()
                     {
                         Id = x.Id,
