@@ -155,7 +155,8 @@
                         text: response.description,
                         icon: 'success',
                         confirmButtonText: 'OK'
-                    })
+                    });
+                    dataTable.draw();
                 },
                 error: function (response) {
                     Swal.fire({

@@ -7,6 +7,8 @@ namespace ToDoListProject.Service.Interfaces
 {
     public interface ITaskService
     {
+        Task<IBaseResponse<IEnumerable<TaskCompletedVM>>> GetCompletedTasks();
+
         Task<IBaseResponse<TaskEntity>> Create(CreateTaskVM model);
 
         Task<IBaseResponse<bool>> EndTask(long id);
