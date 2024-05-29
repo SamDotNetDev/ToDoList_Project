@@ -22,6 +22,37 @@ namespace ToDoListProject.Service.Implementations
             _logger = logger;
         }
 
+        public async Task<IBaseResponse<IEnumerable<TaskCompletedVM>>> GetCompletedTasks()
+        {
+            try
+            {
+                var tasks = await _repository.GetAll()
+                    .Where(x => x.IsDone)
+                    .Where(x => x.Created.Date == DateTime.Today)
+                    .Select(x => new TaskCompletedVM()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description.Substring(0, Math.Min(x.Description.Length, 5))
+                    }).ToListAsync();
+
+                return new BaseResponse<IEnumerable<TaskCompletedVM>>()
+                {
+                    Data = tasks,
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[TaskService.GetCompletedTasks]: {ex.Message}");
+                return new BaseResponse<IEnumerable<TaskCompletedVM>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         public async Task<IBaseResponse<TaskEntity>> Create(CreateTaskVM model)
         {
             try
@@ -110,6 +141,7 @@ namespace ToDoListProject.Service.Implementations
             try
             {
                 var task = await _repository.GetAll()
+                    .Where(x => x.Created.Date == DateTime.Today)
                     .Where(x => !x.IsDone)
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Name), x => x.Name == filter.Name)
                     .WhereIf(filter.Priority.HasValue, x => x.Priority == filter.Priority)
@@ -118,8 +150,8 @@ namespace ToDoListProject.Service.Implementations
                         Id = x.Id,
                         Name = x.Name,
                         Description = x.Description,
-                        IsDone = x.IsDone == true ? "Ready" : "Not ready",
-                        Priority = x.Priority,
+                        IsDone = x.IsDone == true ? "Done" : "Undone",
+                        Priority = x.Priority.GetDisplayName(),
                         Created = x.Created.ToLongDateString()
                     }).ToListAsync();
 

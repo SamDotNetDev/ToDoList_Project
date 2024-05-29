@@ -21,6 +21,20 @@ namespace ToDoListProject.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCompletedTasks()
+        {
+            var result = await _service.GetCompletedTasks();
+            if (result.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                return Json(new { data = result.Data });
+            }
+            else
+            {
+                return StatusCode((int)result.StatusCode, result.Description);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateTaskVM VM)
         {
