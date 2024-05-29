@@ -9,6 +9,8 @@ namespace ToDoListProject.Service.Interfaces
     {
         Task<IBaseResponse<TaskEntity>> Create(CreateTaskVM model);
 
+        Task<IBaseResponse<bool>> EndTask(long id);
+
         Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks(TaskFilter filter);
     }
 }

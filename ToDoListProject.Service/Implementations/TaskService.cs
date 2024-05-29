@@ -71,11 +71,46 @@ namespace ToDoListProject.Service.Implementations
             }
         }
 
+        public async Task<IBaseResponse<bool>> EndTask(long id)
+        {
+            try
+            {
+                var task = await _repository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                if (task is null)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "Task not found",
+                        StatusCode = StatusCode.TaskNotFound
+                    };
+                }
+                task.IsDone = true;
+
+                await _repository.Update(task);
+
+                return new BaseResponse<bool>()
+                {
+                    Description = "Task is done",
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[TaskService.EndTask]: {ex.Message}");
+                return new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         public async Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks(TaskFilter filter)
         {
             try
             {
                 var task = await _repository.GetAll()
+                    .Where(x => !x.IsDone)
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Name), x => x.Name == filter.Name)
                     .WhereIf(filter.Priority.HasValue, x => x.Priority == filter.Priority)
                     .Select(x => new TaskVM()
