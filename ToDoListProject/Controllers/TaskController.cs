@@ -22,7 +22,7 @@ namespace ToDoListProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTaskVM VM)
+        public async Task<IActionResult> Create(CreateTaskVM VM) 
         {
             var response = await _service.Create(VM);
             if (response.StatusCode == Domain.Enum.StatusCode.OK)
