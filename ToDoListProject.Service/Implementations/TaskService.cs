@@ -173,7 +173,7 @@ namespace ToDoListProject.Service.Implementations
             }
         }
 
-        public async Task<IBaseResponse<IEnumerable<TaskVM>>> GetTasks(TaskFilter filter)
+        public async Task<DataTableResult> GetTasks(TaskFilter filter)
         {
             try
             {
@@ -190,20 +190,26 @@ namespace ToDoListProject.Service.Implementations
                         IsDone = x.IsDone == true ? "Done" : "Undone",
                         Priority = x.Priority.GetDisplayName(),
                         Created = x.Created.ToLongDateString()
-                    }).ToListAsync();
+                    })
+                    .Skip(filter.Skip)
+                    .Take(filter.PageSize)
+                    .ToListAsync();
 
-                return new BaseResponse<IEnumerable<TaskVM>>()
+                var count = _repository.GetAll().Count(x => !x.IsDone);
+
+                return new DataTableResult()
                 {
-                    Data = task
+                    Data = task,
+                    Total = count
                 };
             }
             catch(Exception ex)
             {
                 _logger.LogError(ex, $"[TaskService.Create]: {ex.Message}");
-                return new BaseResponse<IEnumerable<TaskVM>>()
+                return new DataTableResult()
                 {
-                    Description = ex.Message,
-                    StatusCode = StatusCode.InternalServerError
+                    Data = null,
+                    Total = 0
                 };
             }
         }

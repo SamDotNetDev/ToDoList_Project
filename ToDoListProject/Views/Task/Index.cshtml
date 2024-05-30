@@ -26,7 +26,9 @@
     </div>
     <div class="form-group col-md-6">
         <label class="col-form-label">Priority</label>
-        <select id="prioritySearch" class="form-control mb-3" asp-items="@Html.GetEnumSelectList<Priority>()"></select>
+        <select id="prioritySearch" class="form-control mb-3" asp-items="@Html.GetEnumSelectList<Priority>()">
+            <option value="">All</option>
+        </select>
     </div>
 </div>
 <br />
@@ -49,6 +51,7 @@
 @section Scripts
 {
     <script type="text/javascript" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
@@ -60,15 +63,19 @@
         });
 
         let dataTable = $('#taskTableId').DataTable({
-            info: true,
+            info: false,
             serverSide: true,
             searching: false,
-            paging: false,
+            processing: true,
+            paging: true,
             sorting: false,
             ajax: {
                 url: '@Url.Action("TaskHandler")',
                 method: 'POST',
-                data: model
+                data: {
+                    Name: $('input[name="nameTask"]').val(),
+                    Priority: $('#prioritySearch option:selected').val()
+                }
             },
             columns: [
                 {data : 'name' },
@@ -127,13 +134,6 @@
                 $('td button', nRow).on('click', handlerComplete);
             }
         });
-
-        function model() {
-            return {
-                Name: $('input[name="nameTask"]').val(),
-                Priority: $('#prioritySearch option:selected').val()
-            }
-        }
 
         $('input[name="nameTask"]').on('change', function () {
             dataTable.draw();
