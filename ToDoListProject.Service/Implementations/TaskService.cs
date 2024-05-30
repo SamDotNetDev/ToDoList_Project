@@ -8,6 +8,9 @@ using ToDoListProject.Service.Interfaces;
 using ToDoListProject.Domain.Enum;
 using ToDoListProject.Domain.Filters.Task;
 using ToDoListProject.Domain.Extensions;
+using System.Diagnostics;
+using System.Globalization;
+using System.Data;
 
 namespace ToDoListProject.Service.Implementations
 {
@@ -20,6 +23,40 @@ namespace ToDoListProject.Service.Implementations
         {
             _repository = repository;
             _logger = logger;
+        }
+
+        public async Task<IBaseResponse<IEnumerable<TaskVM>>> CalculateComletedTasks()
+        {
+            try
+            {
+                var tasks = await _repository.GetAll()
+                    .Where(x => x.Created.Date == DateTime.Today)
+                    .Select(x => new TaskVM()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        IsDone = x.IsDone == true ? "Done" : "Undone",
+                        Priority = x.Priority.GetDisplayName(),
+                        Created = x.Created.ToString(CultureInfo.InvariantCulture)
+                    })
+                    .ToListAsync();
+
+                return new BaseResponse<IEnumerable<TaskVM>>()
+                {
+                    Data = tasks,
+                    StatusCode = StatusCode.OK,
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[TaskService.CalculateComletedTasks]: {ex.Message}");
+                return new BaseResponse<IEnumerable<TaskVM>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
 
         public async Task<IBaseResponse<IEnumerable<TaskCompletedVM>>> GetCompletedTasks()
