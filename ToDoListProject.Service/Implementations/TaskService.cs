@@ -31,6 +31,7 @@ namespace ToDoListProject.Service.Implementations
             {
                 var tasks = await _repository.GetAll()
                     .Where(x => x.Created.Date == DateTime.Today)
+                    .Where(x => x.IsDone)
                     .Select(x => new TaskVM()
                     {
                         Id = x.Id,
