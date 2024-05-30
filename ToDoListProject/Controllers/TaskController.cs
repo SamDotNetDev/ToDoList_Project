@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ToDoListProject.Domain.Filters.Task;
+using ToDoListProject.Domain.Helpers;
 using ToDoListProject.Domain.ViewModels.Task;
 using ToDoListProject.Models;
 using ToDoListProject.Service.Interfaces;
@@ -19,6 +20,21 @@ namespace ToDoListProject.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CalculateComletedTasks()
+        {
+            var response = await _service.CalculateComletedTasks();
+            if(response.StatusCode == Domain.Enum.StatusCode.OK)
+            {
+                var csvService = new CsvBaseService<IEnumerable<TaskVM>>();
+                var uploadFile = csvService.UploadFiles(response.Data);
+
+                return File(uploadFile, "text/csv", $"Statistics for {DateTime.Now.ToLongDateString()}.csv");
+            }
+
+            return BadRequest(new {description = response.Description});
         }
 
         [HttpGet]
